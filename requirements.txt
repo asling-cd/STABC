@@ -1,0 +1,11 @@
+langchain-experimental
+langchain-cohere
+langchain-openai
+chromadb
+langchain-chroma
+cohere
+PyPDF2
+streamlit
+crewai
+crewai-tools
+pandas
