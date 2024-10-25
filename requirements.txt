@@ -10,3 +10,4 @@ crewai
 crewai-tools
 pandas
 pysqlite3-binary
+unstructured
