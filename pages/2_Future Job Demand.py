@@ -120,21 +120,22 @@ def setup_retrievers(vectordb):
     return retriever_multiquery
 
 def setup_retrievers_general(vectordb):
-    logging.info("Running Retriever General")
+    logging.info("Running Retriever General {question}")
     template = """
         Your task is to answer the user question with regards to the future job market.
-       
+        Do not provide any answers outside of what is available in the database. If the answer cannot be found, r
+        Suggest related fields or popular job roles that are currently in demand based on recent labor market data."
         Original question: {question}
         """
 
     query_prompt_template = PromptTemplate(input_variables=["user_prompt"], template=template)
     retriever_multiquery = MultiQueryRetriever.from_llm(retriever=vectordb.as_retriever(), llm=llm, prompt=query_prompt_template)
     
-    compressor = CohereRerank(top_n=3, model='rerank-english-v3.0')
-    compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever_multiquery)
+    #compressor = CohereRerank(top_n=3, model='rerank-english-v3.0')
+    #compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever_multiquery)
     
-    return compression_retriever
-    #return retriever_multiquery
+    #return compression_retriever
+    return retriever_multiquery
 
 def query_job_market(user_prompt, retriever):
     logging.info("Query Job Market")
@@ -151,15 +152,17 @@ def query_general_market(user_prompt, retriever):
 def extract_keywords_with_llm(user_query):
    
     prompt = f"""
-    Determine if the following user query is a general question or focused on skills, interests, or job inquiries.
-    If it is focused, extract the relevant keywords and return them as a comma-separated string.
+    Determine if the following user query is a 
+    1. A general question or 
+    2. Skills, interests, or job inquiries.
+    If it is Skills, interests, or job inquiries, extract the relevant keywords and return them as a comma-separated string.
     If it is a general question, return an empty string. 
 
     Please ensure that the output is exactly as follows:
     - If the query is general, return an empty string: ""
     - If the query is focused, return the keywords as a comma-separated string.
 
-    User query: "{user_query}"
+    User query: "I am exploring {user_query}"
     """
 
     # simple zero shot prompt
