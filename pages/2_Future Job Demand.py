@@ -1,6 +1,8 @@
 __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+import chromadb
+import chromadb.config
 import sqlite3
 import os
 from langchain.vectorstores import Chroma
