@@ -230,8 +230,10 @@ def main():
                     )
     
                     response = query_job_market(user_prompt, retriever)
-
-                st.write("Answer:", response['result'].replace(“$”, “\$”))
+                
+                response['result'] = response['result'].replace("$", "\$")
+                st.write("Answer:", response['result'])
+                
                 #st.write("Source Documents:", response['source_documents'])
 
 if __name__ == "__main__":
